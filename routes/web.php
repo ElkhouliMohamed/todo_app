@@ -32,6 +32,9 @@ Route::middleware('auth')->group(function () {
     Route::post('tasks/{task}/complete', [\App\Http\Controllers\TaskController::class, 'complete'])->name('tasks.complete');
     Route::post('tasks/{id}/restore', [\App\Http\Controllers\TaskController::class, 'restore'])->name('tasks.restore');
     Route::post('tasks/reorder', [\App\Http\Controllers\TaskController::class, 'reorder'])->name('tasks.reorder');
+
+    // Logs
+    Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index'])->middleware(['role:admin'])->name('logs');
 });
 
 require __DIR__ . '/auth.php';
