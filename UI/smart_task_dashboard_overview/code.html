@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Smart Task Dashboard Overview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b6cee",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .active-nav { background-color: rgba(43, 108, 238, 0.1); border-left: 3px solid #2b6cee; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 flex-shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark flex flex-col h-full">
+<div class="p-6">
+<div class="flex items-center gap-2 mb-8">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white">bolt</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-none">Smart Task</h1>
+<p class="text-xs text-slate-500 font-medium">Productivity Pro</p>
+</div>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg active-nav text-primary" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-semibold">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">check_circle</span>
+<span class="text-sm font-medium">Tasks</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-sm font-medium">Calendar</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-sm font-medium">Insights</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors mt-8" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-6 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User profile picture of a professional male" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcc1pt0NNDyP6TKBQX7YycAPltwXzb-U5oFA5j4Z1Peqd3NxkggBKMH4HHMwpCGJePgV98u8Kw8RfFKBF7pFB6SGe14g8nEFWZSgyner5SKOW2SOJ5P3JGMD64ELYRGp0nu7KbE_62zP39io9mYAJ3X4ps1BWA-I5wtZNTTVD_pXavv3vySYbK11A0kTen_2atOqErzhHn-MPO4HuDRCbzNEfeq9mHlFWQ9WfCaLlwpY1FJsPWVD5o2pzNoLMpka0yoMHhi4mys2E"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold truncate">Alex Morgan</p>
+<p class="text-xs text-slate-500 truncate">Premium Plan</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-lg">more_vert</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-hidden">
+<!-- Top Navbar -->
+<header class="h-16 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md flex items-center justify-between px-8 z-10">
+<div class="flex items-center gap-4">
+<h2 class="text-xl font-bold tracking-tight">Good Morning, Alex</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative w-64 group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary text-xl">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary transition-all" placeholder="Search tasks..." type="text"/>
+</div>
+<button class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg font-bold text-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-lg">add</span>
+<span>Quick Add Task</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-background-dark"></span>
+</button>
+</div>
+</header>
+<!-- Dashboard Content -->
+<div class="flex-1 overflow-y-auto p-8 space-y-8">
+<!-- Page Heading & Date -->
+<div class="flex items-end justify-between">
+<div>
+<h1 class="text-3xl font-black tracking-tight">Dashboard Overview</h1>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Monday, October 23rd • You have 3 pending tasks</p>
+</div>
+</div>
+<!-- 3-Column Layout -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Column 1: Productivity Stats -->
+<div class="col-span-12 lg:col-span-4 space-y-6">
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-xl shadow-sm">
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-6">Productivity Score</h3>
+<div class="flex flex-col items-center">
+<div class="relative w-40 h-40">
+<!-- Simple Circular Progress SVG -->
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-slate-100 dark:text-slate-800" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-dasharray="440" stroke-dashoffset="96.8" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-3xl font-black">78%</span>
+<span class="text-xs text-slate-500 font-bold tracking-widest">DONE</span>
+</div>
+</div>
+<div class="mt-6 text-center">
+<p class="text-sm font-medium text-slate-600 dark:text-slate-400">Excellent progress today! You're ahead of 85% of users.</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-xl">
+<p class="text-xs font-bold text-slate-400 mb-1">STREAK</p>
+<p class="text-2xl font-black">12 Days</p>
+<span class="text-xs font-bold text-green-500">+1 today</span>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-xl">
+<p class="text-xs font-bold text-slate-400 mb-1">FOCUS</p>
+<p class="text-2xl font-black">4.5h</p>
+<span class="text-xs font-bold text-primary">+30m avg</span>
+</div>
+</div>
+</div>
+<!-- Column 2: Today's Priorities -->
+<div class="col-span-12 lg:col-span-5 space-y-4">
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-xl h-full shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-400">Today's Priorities</h3>
+<button class="text-primary text-xs font-bold hover:underline">View All</button>
+</div>
+<div class="space-y-3">
+<!-- Task Item -->
+<div class="group flex items-center gap-4 p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all cursor-pointer">
+<div class="w-6 h-6 rounded border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center group-hover:border-primary">
+<span class="material-symbols-outlined text-primary text-base opacity-0 group-hover:opacity-100">check</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold">Review Q4 Project Proposal</p>
+<p class="text-xs text-slate-500 font-medium">Internal Review • 10:00 AM</p>
+</div>
+<span class="px-2 py-1 rounded bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-[10px] font-black uppercase tracking-tighter">High</span>
+</div>
+<div class="group flex items-center gap-4 p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all cursor-pointer">
+<div class="w-6 h-6 rounded border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center group-hover:border-primary">
+<span class="material-symbols-outlined text-primary text-base opacity-0 group-hover:opacity-100">check</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold">Call with Marketing Lead</p>
+<p class="text-xs text-slate-500 font-medium">Sync • 2:30 PM</p>
+</div>
+<span class="px-2 py-1 rounded bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 text-[10px] font-black uppercase tracking-tighter">Med</span>
+</div>
+<div class="group flex items-center gap-4 p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all cursor-pointer">
+<div class="w-6 h-6 rounded border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center group-hover:border-primary">
+<span class="material-symbols-outlined text-primary text-base opacity-0 group-hover:opacity-100">check</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold">Update Roadmap Docs</p>
+<p class="text-xs text-slate-500 font-medium">Planning • 4:00 PM</p>
+</div>
+<span class="px-2 py-1 rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400 text-[10px] font-black uppercase tracking-tighter">Low</span>
+</div>
+<div class="group flex items-center gap-4 p-4 rounded-lg opacity-50 bg-slate-100/50 dark:bg-slate-800/20">
+<div class="w-6 h-6 rounded border-2 border-primary bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-base">check</span>
+</div>
+<div class="flex-1 line-through">
+<p class="text-sm font-bold">Coffee with Sarah</p>
+<p class="text-xs text-slate-500 font-medium font-medium">Social • Done</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-3 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg text-slate-400 text-sm font-bold hover:border-primary hover:text-primary transition-all">
+                                + Add another task
+                            </button>
+</div>
+</div>
+<!-- Column 3: Upcoming Reminders -->
+<div class="col-span-12 lg:col-span-3 space-y-4">
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-xl h-full shadow-sm">
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-6">Upcoming Reminders</h3>
+<div class="relative pl-6 space-y-8 before:content-[''] before:absolute before:left-0 before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100 dark:before:bg-slate-800">
+<!-- Reminder Item -->
+<div class="relative">
+<span class="absolute -left-[27px] top-1 w-2.5 h-2.5 rounded-full bg-primary border-4 border-white dark:border-slate-900 shadow-[0_0_0_4px_rgba(43,108,238,0.1)]"></span>
+<p class="text-xs font-black text-primary uppercase tracking-wider mb-1">In 15 mins</p>
+<p class="text-sm font-bold">Meeting: Q4 Strategy</p>
+<p class="text-xs text-slate-500 mt-1">Room 302 or Zoom link provided</p>
+</div>
+<div class="relative">
+<span class="absolute -left-[27px] top-1 w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600 border-4 border-white dark:border-slate-900"></span>
+<p class="text-xs font-black text-slate-400 uppercase tracking-wider mb-1">2:00 PM Today</p>
+<p class="text-sm font-bold">Pick up documents</p>
+</div>
+<div class="relative">
+<span class="absolute -left-[27px] top-1 w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600 border-4 border-white dark:border-slate-900"></span>
+<p class="text-xs font-black text-slate-400 uppercase tracking-wider mb-1">Tomorrow</p>
+<p class="text-sm font-bold">Subscription Renewal</p>
+<p class="text-xs text-slate-500 mt-1">Auto-pay on Oct 24, 2023</p>
+</div>
+<div class="relative">
+<span class="absolute -left-[27px] top-1 w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600 border-4 border-white dark:border-slate-900"></span>
+<p class="text-xs font-black text-slate-400 uppercase tracking-wider mb-1">Friday</p>
+<p class="text-sm font-bold">Birthday: James R.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Daily Progress Footer Card -->
+<div class="bg-primary/5 border border-primary/20 p-6 rounded-xl flex items-center justify-between gap-8">
+<div class="flex-1">
+<div class="flex justify-between items-end mb-2">
+<p class="text-sm font-bold text-primary">Daily Progress</p>
+<p class="text-xs font-black text-primary uppercase">78% Complete</p>
+</div>
+<div class="h-2 w-full bg-primary/20 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-1000" style="width: 78%;"></div>
+</div>
+<p class="text-xs text-slate-500 mt-3 font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">info</span>
+                            Almost there! Only 3 more priority tasks to reach your daily goal.
+                        </p>
+</div>
+<div class="hidden md:block">
+<button class="bg-primary text-white px-6 py-2.5 rounded-lg font-bold text-sm hover:opacity-90">Finish Strong</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

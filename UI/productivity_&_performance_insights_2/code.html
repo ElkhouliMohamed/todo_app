@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Advanced Productivity Insights Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#2b6cee",
+                "background-light": "#f8fafc",
+                "background-dark": "#0f172a",
+                "surface-dark": "#1e293b",
+                "border-dark": "#334155",
+                "accent-work": "#2b6cee",
+                "accent-personal": "#10b981",
+                "accent-health": "#f59e0b",
+                "accent-learning": "#8b5cf6"
+              },
+              fontFamily: {
+                "display": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .heatmap-cell {
+            @apply rounded-sm transition-all duration-200;
+        }
+        .heatmap-low { @apply bg-slate-200 dark:bg-slate-800; }
+        .heatmap-mid { @apply bg-primary/40; }
+        .heatmap-high { @apply bg-primary/70; }
+        .heatmap-peak { @apply bg-primary; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<aside class="w-64 border-r border-slate-200 dark:border-border-dark flex flex-col bg-white dark:bg-slate-900">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined font-bold">query_stats</span>
+</div>
+<div>
+<h1 class="text-sm font-bold leading-none tracking-tight">FocusFlow</h1>
+<p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-1">Analytics Engine</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-border-dark rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-semibold">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-border-dark rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">checklist</span>
+<span class="text-sm font-semibold">Tasks</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-white bg-primary rounded-lg shadow-lg shadow-primary/20" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">analytics</span>
+<span class="text-sm font-semibold">Insights</span>
+</a>
+<div class="pt-6 pb-2">
+<p class="px-3 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Growth</p>
+</div>
+<a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-border-dark rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">track_changes</span>
+<span class="text-sm font-semibold">Goals</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-border-dark rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-semibold">Settings</span>
+</a>
+</nav>
+<div class="p-6">
+<div class="bg-slate-50 dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-xl p-4">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[10px] font-bold text-slate-500">PRO PLAN</span>
+<span class="text-[10px] font-bold text-primary">82%</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full">
+<div class="bg-primary h-1.5 rounded-full" style="width: 82%"></div>
+</div>
+<p class="text-[10px] text-slate-400 mt-2">Next milestone: Master</p>
+</div>
+</div>
+</aside>
+<main class="flex-1 overflow-y-auto">
+<header class="sticky top-0 z-10 flex items-center justify-between px-8 py-4 border-b border-slate-200 dark:border-border-dark bg-white/80 dark:bg-background-dark/80 backdrop-blur-md">
+<div>
+<h2 class="text-xl font-black text-slate-900 dark:text-white">Advanced Productivity Insights</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-surface-dark rounded-lg border border-slate-200 dark:border-border-dark">
+<span class="material-symbols-outlined text-sm text-slate-400">calendar_month</span>
+<span class="text-xs font-bold">Oct 1, 2023 - Oct 31, 2023</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="text-sm font-bold leading-none">Alex Rivera</p>
+<p class="text-[11px] text-primary font-bold mt-1">Power User</p>
+</div>
+<div class="size-9 rounded-lg bg-cover bg-center border border-slate-200 dark:border-border-dark" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBJJZ28Jm6LHY0h4xR_LVNZG9BmMr5qp0UBtyJ0mPcvAonMHfpL6fhzPQi-s0_0OhBdZLTw2OH76INh_8QyUT6u_v3NEa6Rchnx39JriHovpuo3UiQwOjBHCs5_QWI9uEckt0OS61EDCCwUhmI2CmhjcJkYE4O2EpM1_96DlPNFyI-rtTRnqX0JaJUP_RuKSUh0AuowK09-r1z3sz7C1mCxm4-Ipoiw-OSGmyz-FfvQwkUkrLfqc_i6jS7dbT-Rid4bXXsT6QBf49g')"></div>
+</div>
+</div>
+</header>
+<div class="p-8 space-y-8 max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-slate-200 dark:border-border-dark shadow-sm">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Completion Rate</p>
+<div class="flex items-end justify-between">
+<h3 class="text-3xl font-black text-slate-900 dark:text-white">85%</h3>
+<span class="text-xs font-bold text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded">+4.2%</span>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-slate-200 dark:border-border-dark shadow-sm">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Avg. Tasks / Day</p>
+<div class="flex items-end justify-between">
+<h3 class="text-3xl font-black text-slate-900 dark:text-white">12.4</h3>
+<span class="text-xs font-bold text-slate-400">Stable</span>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-slate-200 dark:border-border-dark shadow-sm">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Focus Sessions</p>
+<div class="flex items-end justify-between">
+<h3 class="text-3xl font-black text-slate-900 dark:text-white">48</h3>
+<span class="text-xs font-bold text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded">+12</span>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark p-6 rounded-2xl border border-slate-200 dark:border-border-dark shadow-sm">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Overdue Tasks</p>
+<div class="flex items-end justify-between">
+<h3 class="text-3xl font-black text-slate-900 dark:text-white">3</h3>
+<span class="text-xs font-bold text-rose-500 bg-rose-500/10 px-2 py-1 rounded">-25%</span>
+</div>
+</div>
+</div>
+<section class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-2xl p-8">
+<div class="flex justify-between items-center mb-10">
+<div>
+<h3 class="text-lg font-bold">Task Performance</h3>
+<p class="text-xs text-slate-500 mt-1">Volume and velocity over the last 30 days</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-primary"></span>
+<span class="text-xs font-bold text-slate-600 dark:text-slate-400">Completed</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-slate-300 dark:bg-slate-600"></span>
+<span class="text-xs font-bold text-slate-600 dark:text-slate-400">Created</span>
+</div>
+</div>
+</div>
+<div class="h-64 w-full relative">
+<svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1000 200">
+<defs>
+<linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="100%">
+<stop offset="0%" stop-color="#2b6cee" stop-opacity="0.15"></stop>
+<stop offset="100%" stop-color="#2b6cee" stop-opacity="0"></stop>
+</linearGradient>
+</defs>
+<line class="text-slate-100 dark:text-slate-800" stroke="currentColor" stroke-width="1" x1="0" x2="1000" y1="50" y2="50"></line>
+<line class="text-slate-100 dark:text-slate-800" stroke="currentColor" stroke-width="1" x1="0" x2="1000" y1="100" y2="100"></line>
+<line class="text-slate-100 dark:text-slate-800" stroke="currentColor" stroke-width="1" x1="0" x2="1000" y1="150" y2="150"></line>
+<polyline class="text-slate-300 dark:text-slate-700" fill="none" points="0,120 100,140 200,110 300,130 400,90 500,100 600,70 700,90 800,60 900,80 1000,50" stroke="currentColor" stroke-width="2"></polyline>
+<path d="M0,150 L100,170 L200,130 L300,140 L400,110 L500,120 L600,90 L700,110 L800,80 L900,100 L1000,70 V200 H0 Z" fill="url(#chartFill)"></path>
+<polyline fill="none" points="0,150 100,170 200,130 300,140 400,110 500,120 600,90 700,110 800,80 900,100 1000,70" stroke="#2b6cee" stroke-width="3"></polyline>
+</svg>
+<div class="flex justify-between mt-4 px-2">
+<span class="text-[10px] font-bold text-slate-400">OCT 01</span>
+<span class="text-[10px] font-bold text-slate-400">OCT 15</span>
+<span class="text-[10px] font-bold text-slate-400">OCT 31</span>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-2xl p-8">
+<h3 class="text-lg font-bold mb-6">Task Distribution</h3>
+<div class="flex items-center justify-around gap-8">
+<div class="relative size-40 shrink-0">
+<svg class="size-full -rotate-90" viewBox="0 0 36 36">
+<circle class="text-slate-100 dark:text-slate-800" cx="18" cy="18" fill="none" r="16" stroke="currentColor" stroke-width="4"></circle>
+<circle cx="18" cy="18" fill="none" r="16" stroke="#2b6cee" stroke-dasharray="45 100" stroke-dashoffset="0" stroke-width="4"></circle>
+<circle cx="18" cy="18" fill="none" r="16" stroke="#10b981" stroke-dasharray="25 100" stroke-dashoffset="-45" stroke-width="4"></circle>
+<circle cx="18" cy="18" fill="none" r="16" stroke="#f59e0b" stroke-dasharray="15 100" stroke-dashoffset="-70" stroke-width="4"></circle>
+<circle cx="18" cy="18" fill="none" r="16" stroke="#8b5cf6" stroke-dasharray="15 100" stroke-dashoffset="-85" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-xl font-black">248</span>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Total</span>
+</div>
+</div>
+<div class="space-y-3 w-full max-w-[160px]">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-accent-work"></span>
+<span class="text-xs font-semibold">Work</span>
+</div>
+<span class="text-xs font-bold">45%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-accent-personal"></span>
+<span class="text-xs font-semibold">Personal</span>
+</div>
+<span class="text-xs font-bold">25%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-accent-health"></span>
+<span class="text-xs font-semibold">Health</span>
+</div>
+<span class="text-xs font-bold">15%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-accent-learning"></span>
+<span class="text-xs font-semibold">Learning</span>
+</div>
+<span class="text-xs font-bold">15%</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-2xl p-8">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-lg font-bold">Recurrence Reliability</h3>
+<div class="flex gap-4">
+<div class="flex items-center gap-1.5">
+<span class="size-2 rounded-full bg-primary"></span>
+<span class="text-[10px] font-bold text-slate-500 uppercase">Completed</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="size-2 rounded-full bg-slate-200 dark:bg-slate-700"></span>
+<span class="text-[10px] font-bold text-slate-500 uppercase">Skipped</span>
+</div>
+</div>
+</div>
+<div class="flex items-end justify-between h-40 gap-4">
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full relative flex flex-col justify-end h-32 gap-0.5">
+<div class="bg-slate-200 dark:bg-slate-700 w-full rounded-t-sm h-[10%]"></div>
+<div class="bg-primary w-full rounded-b-sm h-[90%]"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Mon</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full relative flex flex-col justify-end h-32 gap-0.5">
+<div class="bg-slate-200 dark:bg-slate-700 w-full rounded-t-sm h-[20%]"></div>
+<div class="bg-primary w-full rounded-b-sm h-[80%]"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Tue</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full relative flex flex-col justify-end h-32 gap-0.5">
+<div class="bg-slate-200 dark:bg-slate-700 w-full rounded-t-sm h-[5%]"></div>
+<div class="bg-primary w-full rounded-b-sm h-[95%]"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Wed</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full relative flex flex-col justify-end h-32 gap-0.5">
+<div class="bg-slate-200 dark:bg-slate-700 w-full rounded-t-sm h-[15%]"></div>
+<div class="bg-primary w-full rounded-b-sm h-[85%]"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Thu</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full relative flex flex-col justify-end h-32 gap-0.5">
+<div class="bg-slate-200 dark:bg-slate-700 w-full rounded-t-sm h-[30%]"></div>
+<div class="bg-primary w-full rounded-b-sm h-[70%]"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Fri</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full relative flex flex-col justify-end h-32 gap-0.5">
+<div class="bg-slate-200 dark:bg-slate-700 w-full rounded-t-sm h-[50%]"></div>
+<div class="bg-primary w-full rounded-b-sm h-[50%]"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Sat</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full relative flex flex-col justify-end h-32 gap-0.5">
+<div class="bg-slate-200 dark:bg-slate-700 w-full rounded-t-sm h-[40%]"></div>
+<div class="bg-primary w-full rounded-b-sm h-[60%]"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Sun</span>
+</div>
+</div>
+</div>
+</div>
+<section class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-2xl p-8">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h3 class="text-lg font-bold">Productivity Heatmap</h3>
+<p class="text-xs text-slate-500 mt-1">Activity density by hour and day of the week</p>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-[10px] font-bold text-slate-400 uppercase">Less</span>
+<div class="flex gap-1">
+<div class="size-3 heatmap-low rounded-sm"></div>
+<div class="size-3 heatmap-mid rounded-sm"></div>
+<div class="size-3 heatmap-high rounded-sm"></div>
+<div class="size-3 heatmap-peak rounded-sm"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">More</span>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex flex-col justify-between py-6 text-[10px] font-bold text-slate-400 w-8">
+<span>Mon</span>
+<span>Wed</span>
+<span>Fri</span>
+<span>Sun</span>
+</div>
+<div class="flex-1 grid grid-rows-7 gap-1">
+<div class="grid grid-cols-24 gap-1">
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div>
+<div class="h-8 heatmap-mid"></div><div class="h-8 heatmap-high"></div><div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-high"></div><div class="h-8 heatmap-mid"></div>
+<div class="h-8 heatmap-high"></div><div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-high"></div><div class="h-8 heatmap-mid"></div><div class="h-8 heatmap-mid"></div><div class="h-8 heatmap-low"></div>
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div>
+</div>
+<div class="grid grid-cols-24 gap-1">
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-mid"></div>
+<div class="h-8 heatmap-high"></div><div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-high"></div><div class="h-8 heatmap-high"></div>
+<div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-high"></div><div class="h-8 heatmap-mid"></div><div class="h-8 heatmap-low"></div>
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div>
+</div>
+<div class="grid grid-cols-24 gap-1">
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-high"></div>
+<div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-peak"></div>
+<div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-high"></div><div class="h-8 heatmap-mid"></div>
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div>
+</div>
+<div class="grid grid-cols-24 gap-1">
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-mid"></div>
+<div class="h-8 heatmap-high"></div><div class="h-8 heatmap-high"></div><div class="h-8 heatmap-high"></div><div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-peak"></div><div class="h-8 heatmap-high"></div>
+<div class="h-8 heatmap-mid"></div><div class="h-8 heatmap-high"></div><div class="h-8 heatmap-high"></div><div class="h-8 heatmap-mid"></div><div class="h-8 heatmap-mid"></div><div class="h-8 heatmap-low"></div>
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div>
+</div>
+<div class="grid grid-cols-24 gap-1">
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-mid"></div>
+<div class="h-8 heatmap-mid"></div><div class="h-8 heatmap-mid"></div><div class="h-8 heatmap-high"></div><div class="h-8 heatmap-high"></div><div class="h-8 heatmap-high"></div><div class="h-8 heatmap-mid"></div>
+<div class="h-8 heatmap-mid"></div><div class="h-8 heatmap-mid"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div>
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div>
+</div>
+<div class="grid grid-cols-24 gap-1">
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div>
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-mid"></div><div class="h-8 heatmap-mid"></div><div class="h-8 heatmap-mid"></div><div class="h-8 heatmap-low"></div>
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div>
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div>
+</div>
+<div class="grid grid-cols-24 gap-1">
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div>
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-mid"></div><div class="h-8 heatmap-mid"></div><div class="h-8 heatmap-low"></div>
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div>
+<div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div><div class="h-8 heatmap-low"></div>
+</div>
+</div>
+</div>
+<div class="flex justify-between mt-4 px-12">
+<span class="text-[10px] font-bold text-slate-400">00:00</span>
+<span class="text-[10px] font-bold text-slate-400">06:00</span>
+<span class="text-[10px] font-bold text-slate-400">12:00</span>
+<span class="text-[10px] font-bold text-slate-400">18:00</span>
+<span class="text-[10px] font-bold text-slate-400">23:59</span>
+</div>
+</section>
+</div>
+</main>
+</div>
+
+</body></html>
