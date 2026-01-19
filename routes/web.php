@@ -16,7 +16,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -37,6 +37,11 @@ Route::middleware('auth')->group(function () {
     // Recurring Tasks
     Route::resource('recurring-tasks', \App\Http\Controllers\RecurringTaskController::class);
     Route::post('recurring-tasks/{recurringTask}/toggle-active', [\App\Http\Controllers\RecurringTaskController::class, 'toggleActive'])->name('recurring-tasks.toggle-active');
+
+    // User Management (Admin only)
+    Route::middleware(['can:manage app'])->group(function () {
+        Route::resource('users', \App\Http\Controllers\UserController::class);
+    });
 
     // Logs
     Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index'])->middleware(['role:admin'])->name('logs');

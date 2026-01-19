@@ -81,6 +81,18 @@ export default function TaskSpaceLayout({ children }) {
                             <span className="text-sm font-medium">Recurring Tasks</span>
                         </Link>
 
+                        {/* Admin Only - Users Link */}
+                        {user.permissions?.includes('manage app') && (
+                            <Link
+                                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${route().current('users.*') ? 'bg-primary/10 text-primary border-l-2 border-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                                href={route('users.index')}
+                                onClick={() => setMobileMenuOpen(false)}
+                            >
+                                <span className="material-symbols-outlined">group</span>
+                                <span className="text-sm font-medium">Users</span>
+                            </Link>
+                        )}
+
                         <Link
                             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors mt-8 ${route().current('profile.edit') ? 'bg-primary/10 text-primary border-l-2 border-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
                             href={route('profile.edit')}
