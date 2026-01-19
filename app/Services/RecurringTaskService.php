@@ -29,7 +29,7 @@ class RecurringTaskService
     /**
      * Generate tasks for a specific recurring task
      */
-    public function generateTasksForRecurringTask(RecurringTask $recurringTask, int $daysAhead = 7): int
+    public function generateTasksForRecurringTask(RecurringTask $recurringTask, int $daysAhead = 730): int
     {
         if (!$recurringTask->shouldGenerateTask()) {
             return 0;
@@ -37,7 +37,7 @@ class RecurringTaskService
 
         $tasksCreated = 0;
         $currentDate = $recurringTask->last_generated_date
-            ? $recurringTask->last_generated_date->copy()->addDay()
+            ? $this->getNextOccurrenceDate($recurringTask, $recurringTask->last_generated_date)
             : $recurringTask->start_date->copy();
 
         $endDate = now()->addDays($daysAhead);
@@ -194,12 +194,24 @@ class RecurringTaskService
      */
     protected function getNextOccurrenceDate(RecurringTask $recurringTask, Carbon $currentDate): ?Carbon
     {
-        return match ($recurringTask->recurrence_type) {
-            'daily' => $currentDate->copy()->addDays($recurringTask->recurrence_interval),
-            'weekly' => $currentDate->copy()->addWeeks($recurringTask->recurrence_interval),
-            'monthly' => $currentDate->copy()->addMonths($recurringTask->recurrence_interval),
-            default => null,
-        };
+        switch ($recurringTask->recurrence_type) {
+            case 'daily':
+                return $currentDate->copy()->addDays($recurringTask->recurrence_interval);
+            case 'weekly':
+                return $currentDate->copy()->addWeeks($recurringTask->recurrence_interval);
+            case 'monthly':
+                $nextDate = $currentDate->copy()->addMonths($recurringTask->recurrence_interval);
+                // Force to the specific day of month if set
+                if ($recurringTask->recurrence_day_of_month) {
+                    // Handle end of month edge cases (e.g. 31st)
+                    $daysInMonth = $nextDate->daysInMonth;
+                    $day = min($recurringTask->recurrence_day_of_month, $daysInMonth);
+                    $nextDate->day = $day;
+                }
+                return $nextDate;
+            default:
+                return null;
+        }
     }
 
     /**
@@ -221,7 +233,7 @@ class RecurringTaskService
             'description' => $recurringTask->description,
             'due_date' => $dueDateTime,
             'due_time' => $recurringTask->recurrence_time,
-            'is_all_day' => $recurringTask->is_all_day,
+            'is_all_day' => (bool) $recurringTask->is_all_day,
             'priority' => $recurringTask->priority,
             'status' => 'pending',
             'tags' => $recurringTask->tags,

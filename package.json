@@ -31,6 +31,7 @@
         "date-fns": "^4.1.0",
         "lucide-react": "^0.562.0",
         "react-big-calendar": "^1.19.4",
+        "sweetalert2": "^11.26.17",
         "tailwind-merge": "^3.4.0"
     }
 }

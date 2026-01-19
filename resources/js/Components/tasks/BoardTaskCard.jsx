@@ -92,7 +92,7 @@ export default function BoardTaskCard({ task }) {
                 </Link>
 
                 <div className="flex-shrink-0" onPointerDown={(e) => e.stopPropagation()}>
-                    <DropdownMenu>
+                    <DropdownMenu as="div" className="relative">
                         <DropdownMenuTrigger className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-md transition-colors">
                             <MoreHorizontal className="h-5 w-5" />
                         </DropdownMenuTrigger>
@@ -127,6 +127,28 @@ export default function BoardTaskCard({ task }) {
                             <DropdownMenuItem onClick={() => router.get(route('tasks.edit', task.id))}>
                                 <div className="flex items-center gap-2 w-full">
                                     <span>Edit Task</span>
+                                </div>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => {
+                                import('sweetalert2').then(module => {
+                                    const Swal = module.default;
+                                    Swal.fire({
+                                        title: 'Are you sure?',
+                                        text: "You won't be able to revert this!",
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#ef4444',
+                                        cancelButtonColor: '#6b7280',
+                                        confirmButtonText: 'Yes, delete it!'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            router.delete(route('tasks.destroy', task.id));
+                                        }
+                                    });
+                                });
+                            }} className="text-red-600 focus:text-red-600">
+                                <div className="flex items-center gap-2 w-full">
+                                    <span>Delete Task</span>
                                 </div>
                             </DropdownMenuItem>
                         </DropdownMenuContent>

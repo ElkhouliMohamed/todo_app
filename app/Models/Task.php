@@ -32,6 +32,7 @@ class Task extends Model
     {
         return [
             'due_date' => 'datetime',
+            'due_time' => 'string', // Ensure this is treated as string (H:i)
             'completed_at' => 'datetime',
             'is_all_day' => 'boolean',
             'tags' => 'array',

@@ -263,33 +263,36 @@ export default function BoardView({ tasks = [] }) {
             onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
         >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-full items-start overflow-x-auto pb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 h-full items-start overflow-x-auto pb-4">
                 {COLUMNS.map((col) => (
-                    <div key={col.id} className="flex flex-col h-full min-w-[300px]">
+                    <div key={col.id} className="flex flex-col h-full min-w-[280px] sm:min-w-[300px]">
                         {/* Column Header Card */}
                         <div className="bg-white dark:bg-gray-800 p-3 rounded-xl shadow-sm mb-4 flex items-center justify-between border border-gray-100 dark:border-gray-700/50">
                             <h3 className="font-bold text-gray-700 dark:text-gray-200 text-sm">{col.title}</h3>
-                            <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors p-1 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <button
+                                onClick={() => router.get(route('tasks.create', { status: col.id }))}
+                                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors p-1 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
+                            >
                                 <span className="sr-only">Add Task</span>
                                 <span className="text-lg leading-none block transform -translate-y-[1px]">+</span>
                             </button>
                         </div>
 
                         {/* Droppable Area */}
-                        <div className="flex-1 min-h-[500px]">
+                        <div className="flex-1 min-h-[400px] sm:min-h-[500px]">
                             <DroppableContainer id={col.id}>
                                 <SortableContext
                                     id={col.id}
                                     items={items[col.id].map((t) => t.id)}
                                     strategy={verticalListSortingStrategy}
                                 >
-                                    <div className="space-y-4 pb-4">
+                                    <div className="space-y-3 sm:space-y-4 pb-4">
                                         {items[col.id].map((task) => (
                                             <BoardTaskCard key={task.id} task={task} />
                                         ))}
                                         {/* Empty state placeholder / drop target indicator */}
                                         {items[col.id].length === 0 && (
-                                            <div className="h-24 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-xl flex items-center justify-center text-gray-400 text-sm">
+                                            <div className="h-20 sm:h-24 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-xl flex items-center justify-center text-gray-400 text-sm">
                                                 Drop task here
                                             </div>
                                         )}

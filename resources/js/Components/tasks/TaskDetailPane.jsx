@@ -1,5 +1,16 @@
 import React from 'react';
 import { format } from 'date-fns';
+import { router } from '@inertiajs/react';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/Components/ui/DropdownMenu';
+import { Edit, Trash2, MoreHorizontal } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 export default function TaskDetailPane({ task, onClose }) {
     if (!task) return (
@@ -10,6 +21,33 @@ export default function TaskDetailPane({ task, onClose }) {
             </div>
         </div>
     );
+
+    const handleStatusToggle = () => {
+        const newStatus = task.status === 'completed' ? 'pending' : 'completed';
+        router.post(route('tasks.complete', task.id), {}, {
+            preserveScroll: true,
+            preserveState: true,
+        });
+    };
+
+    const handleDelete = () => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.delete(route('tasks.destroy', task.id), {
+                    preserveScroll: true,
+                    onSuccess: () => onClose(),
+                });
+            }
+        });
+    };
 
     return (
         <div className="w-full h-full flex flex-col bg-white dark:bg-panel-dark overflow-y-auto border-l border-border-dark/50">
@@ -28,9 +66,22 @@ export default function TaskDetailPane({ task, onClose }) {
                     <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border-dark text-xs font-bold hover:bg-gray-100 dark:hover:bg-border-dark transition-colors">
                         <span className="material-symbols-outlined text-base">share</span> Share
                     </button>
-                    <button className="flex items-center justify-center size-8 rounded-lg hover:bg-gray-100 dark:hover:bg-border-dark text-slate-500 transition-colors">
-                        <span className="material-symbols-outlined">more_horiz</span>
-                    </button>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger className="flex items-center justify-center size-8 rounded-lg hover:bg-gray-100 dark:hover:bg-border-dark text-slate-500 transition-colors">
+                            <MoreHorizontal className="h-5 w-5" />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => router.get(route('tasks.edit', task.id))}>
+                                <Edit className="mr-2 h-4 w-4" />
+                                <span>Edit Task</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={handleDelete} className="text-red-600 focus:text-red-600">
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                <span>Delete Task</span>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
             </div>
 
@@ -40,8 +91,8 @@ export default function TaskDetailPane({ task, onClose }) {
                     <input
                         type="checkbox"
                         checked={task.status === 'completed'}
-                        readOnly
-                        className="task-checkbox mt-1 h-6 w-6 rounded-md border-primary/30 border-2 bg-transparent text-primary checked:bg-primary checked:border-primary focus:ring-0 focus:outline-none"
+                        onChange={handleStatusToggle}
+                        className="task-checkbox mt-1 h-6 w-6 rounded-md border-primary/30 border-2 bg-transparent text-primary checked:bg-primary checked:border-primary focus:ring-0 focus:outline-none cursor-pointer"
                     />
                     <div className="flex-1">
                         <h2 className="text-2xl font-bold leading-tight mb-2 outline-none" contentEditable suppressContentEditableWarning={true}>{task.title}</h2>

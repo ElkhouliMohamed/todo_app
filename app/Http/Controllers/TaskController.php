@@ -48,7 +48,8 @@ class TaskController extends Controller
         $sortOrder = $request->get('sort_order', 'asc');
         $query->orderBy($sortBy, $sortOrder);
 
-        $tasks = $query->paginate(20)->withQueryString();
+        $perPage = $request->get('per_page', 20);
+        $tasks = $query->paginate($perPage)->withQueryString();
 
         // Get statistics
         $stats = [
@@ -107,15 +108,22 @@ class TaskController extends Controller
                 'color' => $request->color,
                 'recurrence_type' => $request->recurrence_type,
                 'recurrence_interval' => $request->recurrence_interval,
+                'recurrence_days' => $request->recurrence_days,
+                'recurrence_day_of_month' => $request->recurrence_day_of_month,
                 'end_type' => $request->end_type,
                 'end_date' => $request->end_date,
                 'end_after_occurrences' => $request->end_after_occurrences,
                 'start_date' => $request->due_date ?? now(),
+                'is_all_day' => $request->boolean('is_all_day'),
                 'is_active' => true,
                 'occurrences_created' => 1, // The initial task counts as one
                 'last_generated_date' => $request->due_date ?? now(),
             ]);
             $recurringTaskId = $recurringTask->id;
+
+            // Generate future instances immediately
+            $service = app(\App\Services\RecurringTaskService::class);
+            $service->generateTasksForRecurringTask($recurringTask);
         }
 
         $task = Task::create([
@@ -235,10 +243,45 @@ class TaskController extends Controller
     {
         Gate::authorize('delete', $task);
 
+        if ($task->recurring_task_id) {
+            $recurringTask = \App\Models\RecurringTask::find($task->recurring_task_id);
+            if ($recurringTask) {
+                // Delete all tasks associated with this recurring series
+                Task::where('recurring_task_id', $recurringTask->id)->delete();
+                // Delete the recurring task definition
+                $recurringTask->delete();
+
+                return redirect()->route('tasks.index')
+                    ->with('success', 'Recurring task series deleted successfully!');
+            }
+        }
+
         $task->delete();
 
         return redirect()->route('tasks.index')
             ->with('success', 'Task deleted successfully!');
+    }
+
+    /**
+     * Remove multiple resources from storage.
+     */
+    public function bulkDestroy(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'exists:tasks,id',
+        ]);
+
+        $count = 0;
+        foreach ($request->ids as $id) {
+            $task = Task::find($id);
+            if ($task && $task->user_id === auth()->id()) {
+                $task->delete();
+                $count++;
+            }
+        }
+
+        return back()->with('success', "$count tasks deleted successfully!");
     }
 
     /**

@@ -32,6 +32,11 @@ Route::middleware('auth')->group(function () {
     Route::post('tasks/{task}/complete', [\App\Http\Controllers\TaskController::class, 'complete'])->name('tasks.complete');
     Route::post('tasks/{id}/restore', [\App\Http\Controllers\TaskController::class, 'restore'])->name('tasks.restore');
     Route::post('tasks/reorder', [\App\Http\Controllers\TaskController::class, 'reorder'])->name('tasks.reorder');
+    Route::post('tasks/bulk-destroy', [\App\Http\Controllers\TaskController::class, 'bulkDestroy'])->name('tasks.bulk-destroy');
+
+    // Recurring Tasks
+    Route::resource('recurring-tasks', \App\Http\Controllers\RecurringTaskController::class);
+    Route::post('recurring-tasks/{recurringTask}/toggle-active', [\App\Http\Controllers\RecurringTaskController::class, 'toggleActive'])->name('recurring-tasks.toggle-active');
 
     // Logs
     Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index'])->middleware(['role:admin'])->name('logs');

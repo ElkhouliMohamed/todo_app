@@ -7,3 +7,4 @@ $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
 Schedule::command('app:send-task-reminders')->everyMinute();
+Schedule::command('generate:recurring-tasks')->everyMinute();

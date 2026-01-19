@@ -32,6 +32,8 @@ export default function Create({ auth }) {
         is_recurring: false,
         recurrence_type: 'daily',
         recurrence_interval: 1,
+        recurrence_days: [], // For weekly recurrence
+        recurrence_day_of_month: 1, // For monthly recurrence
         end_type: 'never',
         end_date: '',
         end_occurrences: '',
@@ -86,10 +88,10 @@ export default function Create({ auth }) {
         >
             <Head title="Create Task" />
 
-            <div className="min-h-[calc(100vh-65px)] py-6 lg:py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-indigo-950/20 overflow-x-hidden">
+            <div className="min-h-[calc(100vh-65px)] py-4 sm:py-6 lg:py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-indigo-950/20 overflow-x-hidden">
                 <div className="max-w-4xl mx-auto">
                     {/* Header Section */}
-                    <div className="flex items-center justify-between mb-8">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8 gap-3">
                         <div>
                             <Link
                                 href={route('tasks.index')}
@@ -98,26 +100,50 @@ export default function Create({ auth }) {
                                 <ArrowLeft className="w-4 h-4 mr-1" />
                                 Back to Tasks
                             </Link>
-                            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
+                            <h1 className="text-2xl sm:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
                                 Create New Task
                             </h1>
-                            <p className="text-gray-500 dark:text-gray-400 mt-1">
+                            <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">
                                 Plan your work and stay organized.
                             </p>
                         </div>
                     </div>
 
                     <form onSubmit={handleSubmit}>
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+                            {/* Actions Card - Show first on mobile */}
+                            <div className="lg:hidden space-y-4 sm:space-y-6">
+                                <div className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-white/20 dark:border-gray-800 rounded-2xl shadow-xl p-4 sm:p-6">
+                                    <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-4">
+                                        Actions
+                                    </h3>
+                                    <div className="space-y-3">
+                                        <Button
+                                            type="submit"
+                                            disabled={processing}
+                                            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/30 border-0 h-11"
+                                        >
+                                            <Save className="w-4 h-4 mr-2" />
+                                            {processing ? 'Creating...' : 'Create Task'}
+                                        </Button>
+                                        <Link href={route('tasks.index')} className="block">
+                                            <Button type="button" variant="outline" className="w-full border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 h-11">
+                                                Cancel
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+
                             {/* Main Content */}
-                            <div className="lg:col-span-2 space-y-6">
+                            <div className="lg:col-span-2 space-y-4 sm:space-y-6">
                                 {/* Title & Description Card */}
-                                <div className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-white/20 dark:border-gray-800 rounded-2xl shadow-xl p-6 md:p-8 relative overflow-hidden group">
+                                <div className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-white/20 dark:border-gray-800 rounded-2xl shadow-xl p-4 sm:p-6 md:p-8 relative overflow-hidden group">
                                     <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                                         <CheckCircle2 className="w-24 h-24 transform rotate-12 text-indigo-500" />
                                     </div>
 
-                                    <div className="space-y-6 relative z-10">
+                                    <div className="space-y-4 sm:space-y-6 relative z-10">
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                                                 Task Title
@@ -128,7 +154,7 @@ export default function Create({ auth }) {
                                                 onChange={(e) => setData('title', e.target.value)}
                                                 placeholder="What needs to be done?"
                                                 className={cn(
-                                                    "w-full px-4 py-3 rounded-xl border-0 ring-1 ring-gray-200 dark:ring-gray-800 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm focus:ring-2 focus:ring-indigo-500 transition-all text-lg placeholder:text-gray-400 dark:text-white",
+                                                    "w-full px-4 py-3 rounded-xl border-0 ring-1 ring-gray-200 dark:ring-gray-800 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm focus:ring-2 focus:ring-indigo-500 transition-all text-base sm:text-lg placeholder:text-gray-400 dark:text-white",
                                                     errors.title && "ring-red-500 focus:ring-red-500"
                                                 )}
                                             />
@@ -153,8 +179,8 @@ export default function Create({ auth }) {
                                 </div>
 
                                 {/* Schedule & Recurrence */}
-                                <div className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-white/20 dark:border-gray-800 rounded-2xl shadow-xl p-6 md:p-8">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-white/20 dark:border-gray-800 rounded-2xl shadow-xl p-4 sm:p-6 md:p-8">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                                         <div>
                                             <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
                                                 <Calendar className="w-4 h-4 text-indigo-500" /> Due Date
@@ -194,7 +220,7 @@ export default function Create({ auth }) {
                                     </div>
 
                                     {/* Recurrence Toggle */}
-                                    <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
+                                    <div className="mt-6 sm:mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-2">
                                                 <div className={`p-2 rounded-lg ${data.is_recurring ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400' : 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400'}`}>
@@ -246,6 +272,111 @@ export default function Create({ auth }) {
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                {/* Weekly Day Selection */}
+                                                {data.recurrence_type === 'weekly' && (
+                                                    <div>
+                                                        <label className="text-xs font-semibold uppercase text-gray-500 mb-2 block">Repeat on</label>
+                                                        <div className="flex flex-wrap gap-2">
+                                                            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, index) => (
+                                                                <button
+                                                                    key={day}
+                                                                    type="button"
+                                                                    onClick={() => {
+                                                                        const days = data.recurrence_days || [];
+                                                                        const newDays = days.includes(index)
+                                                                            ? days.filter(d => d !== index)
+                                                                            : [...days, index];
+                                                                        setData('recurrence_days', newDays);
+                                                                    }}
+                                                                    className={cn(
+                                                                        "w-10 h-10 rounded-full text-xs font-semibold transition-all",
+                                                                        (data.recurrence_days || []).includes(index)
+                                                                            ? "bg-indigo-600 text-white"
+                                                                            : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:bg-gray-50"
+                                                                    )}
+                                                                >
+                                                                    {day}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {/* Monthly Day Selection */}
+                                                {data.recurrence_type === 'monthly' && (
+                                                    <div>
+                                                        <label className="text-xs font-semibold uppercase text-gray-500 mb-1.5 block">Day of Month</label>
+                                                        <input
+                                                            type="number"
+                                                            min="1"
+                                                            max="31"
+                                                            value={data.recurrence_day_of_month || 1}
+                                                            onChange={(e) => setData('recurrence_day_of_month', e.target.value)}
+                                                            className="w-24 rounded-lg border-gray-200 dark:border-gray-700 text-sm focus:ring-indigo-500 dark:bg-gray-800 dark:text-white"
+                                                        />
+                                                        <p className="text-xs text-gray-500 mt-1">Day 1-31 (adjusts for shorter months)</p>
+                                                    </div>
+                                                )}
+
+                                                {/* End Type Selection */}
+                                                <div>
+                                                    <label className="text-xs font-semibold uppercase text-gray-500 mb-2 block">Ends</label>
+                                                    <div className="space-y-3">
+                                                        <label className="flex items-center gap-2 cursor-pointer">
+                                                            <input
+                                                                type="radio"
+                                                                name="end_type"
+                                                                value="never"
+                                                                checked={data.end_type === 'never'}
+                                                                onChange={(e) => setData('end_type', e.target.value)}
+                                                                className="text-indigo-600 focus:ring-indigo-500"
+                                                            />
+                                                            <span className="text-sm text-gray-700 dark:text-gray-300">Never</span>
+                                                        </label>
+
+                                                        <label className="flex flex-wrap items-center gap-2 cursor-pointer">
+                                                            <input
+                                                                type="radio"
+                                                                name="end_type"
+                                                                value="after_occurrences"
+                                                                checked={data.end_type === 'after_occurrences'}
+                                                                onChange={(e) => setData('end_type', e.target.value)}
+                                                                className="text-indigo-600 focus:ring-indigo-500"
+                                                            />
+                                                            <span className="text-sm text-gray-700 dark:text-gray-300">After</span>
+                                                            <input
+                                                                type="number"
+                                                                min="1"
+                                                                value={data.end_occurrences || ''}
+                                                                onChange={(e) => setData('end_occurrences', e.target.value)}
+                                                                disabled={data.end_type !== 'after_occurrences'}
+                                                                className="w-20 rounded-lg border-gray-200 dark:border-gray-700 text-sm focus:ring-indigo-500 dark:bg-gray-800 dark:text-white disabled:opacity-50"
+                                                                placeholder="10"
+                                                            />
+                                                            <span className="text-sm text-gray-700 dark:text-gray-300">occurrences</span>
+                                                        </label>
+
+                                                        <label className="flex flex-wrap items-center gap-2 cursor-pointer">
+                                                            <input
+                                                                type="radio"
+                                                                name="end_type"
+                                                                value="on_date"
+                                                                checked={data.end_type === 'on_date'}
+                                                                onChange={(e) => setData('end_type', e.target.value)}
+                                                                className="text-indigo-600 focus:ring-indigo-500"
+                                                            />
+                                                            <span className="text-sm text-gray-700 dark:text-gray-300">On</span>
+                                                            <input
+                                                                type="date"
+                                                                value={data.end_date || ''}
+                                                                onChange={(e) => setData('end_date', e.target.value)}
+                                                                disabled={data.end_type !== 'on_date'}
+                                                                className="rounded-lg border-gray-200 dark:border-gray-700 text-sm focus:ring-indigo-500 dark:bg-gray-800 dark:text-white disabled:opacity-50"
+                                                            />
+                                                        </label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         )}
                                     </div>
@@ -253,9 +384,9 @@ export default function Create({ auth }) {
                             </div>
 
                             {/* Sidebar Options */}
-                            <div className="space-y-6">
-                                {/* Actions Card */}
-                                <div className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-white/20 dark:border-gray-800 rounded-2xl shadow-xl p-6">
+                            <div className="space-y-4 sm:space-y-6">
+                                {/* Actions Card - Hidden on mobile, shown on desktop */}
+                                <div className="hidden lg:block bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-white/20 dark:border-gray-800 rounded-2xl shadow-xl p-6">
                                     <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-4">
                                         Actions
                                     </h3>
@@ -277,7 +408,7 @@ export default function Create({ auth }) {
                                 </div>
 
                                 {/* Settings Card */}
-                                <div className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-white/20 dark:border-gray-800 rounded-2xl shadow-xl p-6 space-y-6">
+                                <div className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-white/20 dark:border-gray-800 rounded-2xl shadow-xl p-4 sm:p-6 space-y-4 sm:space-y-6">
                                     {/* Priority */}
                                     <div>
                                         <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
@@ -338,7 +469,7 @@ export default function Create({ auth }) {
                                 </div>
 
                                 {/* Tags Card */}
-                                <div className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-white/20 dark:border-gray-800 rounded-2xl shadow-xl p-6">
+                                <div className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-white/20 dark:border-gray-800 rounded-2xl shadow-xl p-4 sm:p-6">
                                     <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
                                         <Tag className="w-4 h-4 text-indigo-500" /> Tags
                                     </label>
