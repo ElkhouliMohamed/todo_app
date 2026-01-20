@@ -17,9 +17,6 @@ export default function Edit({ auth, task }) {
         status: task.status || 'pending',
         tags: task.tags || [],
         color: task.color || '#3B82F6',
-        status: task.status || 'pending',
-        tags: task.tags || [],
-        color: task.color || '#3B82F6',
         reminders: task.reminders || [],
     });
 
