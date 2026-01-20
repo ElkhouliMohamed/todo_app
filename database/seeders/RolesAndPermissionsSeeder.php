@@ -27,7 +27,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $role->givePermissionTo('view logs');
 
         // Assign admin role to both admin users
-        $adminEmails = ['test@example.com', 'elkhoulimohameddev@gmail.com'];
+        $adminEmails = ['elkhoulimohameddev@gmail.com'];
 
         foreach ($adminEmails as $email) {
             $user = User::where('email', $email)->first();
